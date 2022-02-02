@@ -2,6 +2,8 @@ package ru.job4j.model;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.Instant;
+import java.util.Date;
 import java.util.Objects;
 
 @Entity
@@ -43,6 +45,9 @@ public class CarAd {
     private short manufactureYear;
 
     private int mileage;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date created;
 
     public static class Builder {
         private CarAd carAd;
@@ -101,6 +106,7 @@ public class CarAd {
         }
 
         public CarAd build() {
+            carAd.created = Date.from(Instant.now());
             return carAd;
         }
     }
@@ -199,6 +205,14 @@ public class CarAd {
 
     public void setMileage(int mileage) {
         this.mileage = mileage;
+    }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
     }
 
     @Override

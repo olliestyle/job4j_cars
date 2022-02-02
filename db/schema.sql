@@ -48,6 +48,7 @@ create table carAds
     isSold boolean not null ,
     manufactureYear int not null ,
     mileage int not null ,
+    created date not null ,
     user_id int references users(id) ,
     carBrand_id int references carBrands(id) ,
     carModel_id int references carModels(id) ,
