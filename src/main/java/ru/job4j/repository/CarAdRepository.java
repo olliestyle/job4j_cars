@@ -47,6 +47,10 @@ public class CarAdRepository {
     public List<CarAd> findByCarModel(String carModel) {
         return tx(session -> session.createQuery("select distinct ca from CarAd ca "
                 + " join fetch ca.carModel cm"
+                + " join fetch ca.bodyType bt"
+                + " join fetch ca.carBrand cb"
+                + " join fetch ca.transmission tm"
+                + " join fetch ca.user u"
                 + " where cm.carModel = :modelToFind ", CarAd.class)
                 .setParameter("modelToFind", carModel)
                 .getResultList());
