@@ -7,6 +7,7 @@ import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -122,6 +123,8 @@ public class CreateAndInsert {
             String description = "Не бита, не крашена";
             BigDecimal price = new BigDecimal(7_500_000);
             String photo = "http://privetphoto.com/1238123";
+            String photo1 = "http://privetphoto.com/zzz";
+            String photo2 = "http://privetphoto.com/aksjdlkasjdlk";
             short manufactureYear = 2020;
             int mileage = 33333;
 
@@ -130,21 +133,21 @@ public class CreateAndInsert {
                     .carModel(bmw.getCarModels().get(0))
                     .bodyType(bmw.getCarModels().get(0).getBodyType())
                     .transmission(auto).description(description).price(price)
-                    .photo(photo).manufactureYear(manufactureYear).mileage(mileage)
+                    .photos(List.of(photo, photo1, photo2)).manufactureYear(manufactureYear).mileage(mileage)
                     .build();
             CarAd carAd2 = new CarAd.Builder()
                     .user(oleg).carBrand(audi)
                     .carModel(audi.getCarModels().get(1))
                     .bodyType(audi.getCarModels().get(1).getBodyType())
                     .transmission(auto).description(description).price(price)
-                    .photo(photo).manufactureYear(manufactureYear).mileage(mileage)
+                    .photos(List.of(photo, photo1, photo2)).manufactureYear(manufactureYear).mileage(mileage)
                     .build();
             CarAd carAd3 = new CarAd.Builder()
                     .user(pavel).carBrand(kia)
                     .carModel(kia.getCarModels().get(2))
                     .bodyType(kia.getCarModels().get(2).getBodyType())
                     .transmission(auto).description(description).price(price)
-                    .photo(photo).manufactureYear(manufactureYear).mileage(mileage)
+                    .photos(List.of(photo, photo1, photo2)).manufactureYear(manufactureYear).mileage(mileage)
                     .build();
 
             session.save(carAd1);

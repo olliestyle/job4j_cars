@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -38,7 +39,10 @@ public class CarAd {
 
     private BigDecimal price;
 
-    private String photo;
+    @ElementCollection
+    @CollectionTable(name = "images", joinColumns = @JoinColumn(name = "carAdd_id"))
+    @Column(name = "photourl")
+    private List<String> photos;
 
     private boolean isSold;
 
@@ -90,8 +94,8 @@ public class CarAd {
             return this;
         }
 
-        public Builder photo(String photo) {
-            carAd.photo = photo;
+        public Builder photos(List<String> photos) {
+            carAd.photos = photos;
             return this;
         }
 
@@ -175,12 +179,12 @@ public class CarAd {
         this.price = price;
     }
 
-    public String getPhoto() {
-        return photo;
+    public List<String> getPhotos() {
+        return photos;
     }
 
-    public void setPhoto(String photo) {
-        this.photo = photo;
+    public void setPhotos(List<String> photos) {
+        this.photos = photos;
     }
 
     public boolean isSold() {
@@ -224,19 +228,19 @@ public class CarAd {
             return false;
         }
         CarAd carAd = (CarAd) o;
-        return id == carAd.id && Objects.equals(description, carAd.description) && Objects.equals(photo, carAd.photo);
+        return id == carAd.id && Objects.equals(description, carAd.description) && Objects.equals(photos, carAd.photos);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, description, photo);
+        return Objects.hash(id, description, photos);
     }
 
     @Override
     public String toString() {
         return "CarAd{" + "id=" + id + ", user=" + user + ", carBrand=" + carBrand
                 + ", carModel=" + carModel + ", bodyType=" + bodyType + ", transmission=" + transmission
-                + ", description='" + description + '\'' + ", price=" + price + ", photo='" + photo + '\''
+                + ", description='" + description + '\'' + ", price=" + price + ", photos='" + photos + '\''
                 + ", isSold=" + isSold + ", manufactureYear=" + manufactureYear + ", mileage=" + mileage + "'}'";
     }
 }

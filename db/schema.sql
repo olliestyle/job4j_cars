@@ -44,7 +44,6 @@ create table carAds
     id serial primary key ,
     description varchar(255) not null ,
     price numeric not null ,
-    photo varchar(255) not null ,
     isSold boolean not null ,
     manufactureYear int not null ,
     mileage int not null ,
@@ -84,3 +83,9 @@ create table history_owner
     car_id int references cars(id)
 );
 
+create table images
+(
+    id serial primary key ,
+    photourl varchar(255) not null ,
+    carAdd_id int references carAds(id)
+);
