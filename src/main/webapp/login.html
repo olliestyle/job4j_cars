@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="css/login.css">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Oswald:400,300" type="text/css">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="javascript/login.js"></script>
+</head>
+<body>
+<form>
+<div id="bg"></div>
+    <div class="form-field">
+        <input type="email" id="emailId" placeholder="Email" required/>
+    </div>
+    <div class="form-field">
+        <input type="password" id="passwordId" placeholder="Password" required/>
+    </div>
+    <div class="form-field">
+        <input type="button" class="btn btn-primary" value="Войти" onclick="tryLogin()">
+    </div>
+    <span class="message"></span>
+</form>
+</body>
+</html>
