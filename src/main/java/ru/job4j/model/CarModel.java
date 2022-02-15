@@ -16,11 +16,11 @@ public class CarModel {
     @OneToMany(mappedBy = "carModel")
     private List<CarAd> carAds = new ArrayList<>();
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JoinColumn(name = "bodyType_id")
     private BodyType bodyType;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JoinColumn(name = "carBrand_id")
     private CarBrand carBrand;
 

@@ -44,3 +44,26 @@ header {
 #addAd {
     float: left;
 }
+
+aside {
+    float: left;
+    width: 250px;
+}
+
+aside input {
+    font-family: 'Oswald', sans-serif;
+    color: black;
+    width: 200px;
+    margin: 20px;
+}
+
+select {
+    font-family: 'Oswald', sans-serif;
+    color: black;
+    width: 200px;
+    border: none;
+    outline: none;
+    scroll-behavior: smooth;
+    margin: 20px;
+}
+

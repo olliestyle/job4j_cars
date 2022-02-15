@@ -17,8 +17,24 @@
         <div id="heading">
             <h1>ОБЪЯВЛЕНИЯ О ПРОДАЖЕ МАШИН</h1>
         </div>
-        <aside></aside>
-        <section></section>
+        <aside>
+            <h2 style="text-align: center">Фильтры</h2>
+            <select id="selectCarBrandId" onchange="loadCarModels()">
+                <option selected>Выберите брэнд</option>
+            </select>
+            <select id="selectCarModelId">
+                <option selected>Выберите модель</option>
+            </select>
+            <select id="selectBodyTypeId">
+                <option selected>Выберите тип кузова</option>
+            </select>
+            <select id="selectTransmissionId">
+                <option selected>Выберите коробку передач</option>
+            </select>
+            <input type="button" value="Поиск" onclick="trySearch()">
+        </aside>
+        <section>
+        </section>
     </div>
     <footer></footer>
 </body>
