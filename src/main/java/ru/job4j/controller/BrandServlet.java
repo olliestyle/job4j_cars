@@ -22,7 +22,7 @@ public class BrandServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json; charset=utf-8");
         OutputStream outputStream = resp.getOutputStream();
-        List<CarBrand> carBrands = CarAdService.getInstance().findAllCarBrands();
+        List<CarBrand> carBrands = (List<CarBrand>) CarAdService.getInstance().findAllByClassName(CarBrand.class);
         carBrands.forEach(cb -> {
             cb.setCarModels(null);
             cb.setCarAds(null);

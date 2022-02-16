@@ -67,8 +67,8 @@ public class CarAdRepository {
                 .getResultList());
     }
 
-    public List<?> findAllByClassName(Class className) {
-        return tx(session -> session.createQuery("from " + className.getName()).getResultList());
+    public List<?> findAllByClassName(Class clazz) {
+        return tx(session -> session.createQuery("from " + clazz.getName()).getResultList());
     }
 
     public List<CarModel> findAllModelsById(Integer id) {
@@ -81,31 +81,15 @@ public class CarAdRepository {
                 .getResultList());
     }
 
-    public List<CarBrand> findAllCarBrands() {
+    public List<CarAd> findAllCarAds() {
         return tx(session -> session
-                .createQuery("from CarBrand")
-//                .createQuery("select distinct cb from CarBrand cb "
-//                        + " join fetch cb.carAds "
-//                        + " join fetch cb.carModels")
+                .createQuery("select distinct ca from CarAd ca "
+                        + " join fetch ca.user as u "
+                        + " join fetch ca.carBrand as cb "
+                        + " join fetch ca.carModel as cm "
+                        + " join fetch ca.bodyType as bt "
+                        + " join fetch ca.transmission as t"
+                        + " join fetch ca.photos as p")
                 .getResultList());
     }
-
-    public List<BodyType> findAllBodyTypes() {
-        return tx(session -> session
-                .createQuery("from BodyType")
-//                .createQuery("select distinct bt from BodyType bt "
-//                        + " join fetch bt.carModels as cm "
-//                        + " join fetch bt.carAds as ca ")
-                .getResultList());
-    }
-
-    public List<Transmission> findAllTransmissions() {
-        return tx(session -> session
-                .createQuery("from Transmission")
-//                .createQuery("select distinct tr from Transmission tr "
-//                        + " join fetch tr.carModels as cm "
-//                        + " join fetch tr.carAds as ca")
-                .getResultList());
-    }
-
 }

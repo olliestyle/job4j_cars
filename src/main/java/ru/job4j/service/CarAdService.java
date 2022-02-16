@@ -1,9 +1,6 @@
 package ru.job4j.service;
 
-import ru.job4j.model.BodyType;
-import ru.job4j.model.CarBrand;
-import ru.job4j.model.CarModel;
-import ru.job4j.model.Transmission;
+import ru.job4j.model.*;
 import ru.job4j.repository.CarAdRepository;
 
 import java.util.List;
@@ -27,15 +24,11 @@ public class CarAdService {
         return CAR_AD_REPOSITORY.findAllModelsById(id);
     }
 
-    public List<CarBrand> findAllCarBrands() {
-        return CAR_AD_REPOSITORY.findAllCarBrands();
+    public List<?> findAllByClassName(Class clazz) {
+        return CAR_AD_REPOSITORY.findAllByClassName(clazz);
     }
 
-    public List<BodyType> findAllBodyTypes() {
-        return CAR_AD_REPOSITORY.findAllBodyTypes();
-    }
-
-    public List<Transmission> findAllTransmissions() {
-        return CAR_AD_REPOSITORY.findAllTransmissions();
+    public List<CarAd> findAllCarAds() {
+        return CAR_AD_REPOSITORY.findAllCarAds();
     }
 }

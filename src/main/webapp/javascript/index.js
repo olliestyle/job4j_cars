@@ -1,10 +1,87 @@
 "use strict"
+
+// let slideIndex = 1;
+
+let slideIndex = [1, 1, 1];
+/* Class the members of each slideshow group with different CSS classes */
+const slideId = ["mySlides1", "mySlides2", "mySlides3"];
+
 $(document).ready(function () {
     isLogged();
     loadCarBrands();
     loadBodyTypes();
     loadTransmissions();
+    showAllAds();
+    showSlides(1, 0);
+    showSlides(1, 1);
+    showSlides(1, 2);
+    // showSlides(slideIndex);
 });
+
+function showAllAds() {
+    $(function () {
+        $.ajax({
+            type: 'GET',
+            url: 'http://localhost:8080/job4j_cars/ads.do',
+            cache: false,
+            dataType: 'json'
+        }).done(function (data) {
+            let i = 1;
+            for (const ad of data) {
+                $('#ads').append('<div class="advertisement">\n' +
+                    '                <p id="adCreated" style="float: right">\n' +
+                    '                    Объявление создано:' + ad.created +
+                    '                </p>\n' +
+                    '                <p id="adInfo">\n' +
+                    '                ' + ad.carBrand.carBrand + ' ' + ad.carModel.carModel +
+                    '                ' + ad.bodyType.bodyType + ' ' + ad.transmission.transmission +
+                    '                ' + ad.manufactureYear + 'г.' + ad.mileage + 'км.' +
+                    '                </p>\n' +
+                    '                <p id="adPrice">\n' +
+                    '                    Цена:' + ad.price + 'руб.' +
+                    '                </p>\n' +
+                    '                <p id="adDecs">\n' +
+                    '                ' + ad.description +
+                    '                </p>\n' +
+                    '                    <div class="slideshow-container">\n' +
+                                                fillPhotos(ad.photos, i) +
+
+                                                     +
+                    '                    </div>\n' +
+                    '                    <div style="text-align:center">\n' +
+                                            fillDots(ad.photos.length, i) +
+                    '                    </div>\n' +
+                    '            </div>');
+                i = i + 1;
+                console.log(i);
+                // $('#selectCarBrandId').append('<option value="' + brand.id + '">' + brand.carBrand + '</option>');
+            }
+        }).fail(function (err) {
+            console.log(err);
+        });
+    })
+}
+
+function fillPhotos(photos, i) {
+    let toReturn = '';
+    for(const photo of photos) {
+        toReturn = toReturn + '<div class="mySlides' + i  + '">\n' +
+            '<img class="carPhoto" src="/job4j_cars/download.do?name=' + photo + '"/>\n' +
+            '</div>\n';
+    }
+    toReturn = toReturn + '<a class="prev" onclick="plusSlides(-1,' + (i - 1) + ')">&#10094;</a> +\n' +
+                            '<a class="next" onclick="plusSlides(1,' + (i - 1) + ')">&#10095;</a>n\''
+    console.log(toReturn);
+    return toReturn;
+}
+
+function fillDots(length) {
+    var toReturn = '';
+    for (var i = 1; i <= length; i++) {
+        toReturn = toReturn + '<span class="dot" onclick="currentSlide(' + i + ', ' + (i - 1) +')"></span>\n'
+    }
+    return toReturn;
+}
 
 function isLogged() {
     $(function () {
@@ -60,7 +137,6 @@ function loadCarBrands() {
 
 function loadCarModels() {
     var carBrandId = document.getElementById('selectCarBrandId').value;
-    console.log(carBrandId);
     removeOptions(document.getElementById('selectCarModelId'));
     $(function () {
         $.ajax({
@@ -118,4 +194,46 @@ function loadTransmissions() {
             console.log(err);
         });
     })
+}
+
+// // Next/previous controls
+// function plusSlides(n) {
+//     showSlides(slideIndex += n);
+// }
+//
+// // Thumbnail image controls
+function currentSlide(n, no) {
+    showSlides(slideIndex = n, no);
+}
+
+// function showSlides(n) {
+//     let i;
+//     const slides = document.getElementsByClassName("mySlides");
+//     const dots = document.getElementsByClassName("dot");
+//     if (n > slides.length) {slideIndex = 1}
+//     if (n < 1) {slideIndex = slides.length}
+//     for (i = 0; i < slides.length; i++) {
+//         slides[i].style.display = "none";
+//     }
+//     for (i = 0; i < dots.length; i++) {
+//         dots[i].className = dots[i].className.replace(" active", "");
+//     }
+//     slides[slideIndex-1].style.display = "block";
+//     dots[slideIndex-1].className += " active";
+// }
+
+function plusSlides(n, no) {
+    showSlides(slideIndex[no] += n, no);
+}
+
+function showSlides(n, no) {
+    let i;
+    const x = document.getElementsByClassName(slideId[no]);
+    console.log(x)
+    if (n > x.length) {slideIndex[no] = 1}
+    if (n < 1) {slideIndex[no] = x.length}
+    for (i = 0; i < x.length; i++) {
+        x[i].style.display = "none";
+    }
+    x[slideIndex[no]-1].style.display = "block";
 }
