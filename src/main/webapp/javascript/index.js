@@ -1,8 +1,8 @@
 "use strict"
 
-let slideIndex = [1, 1, 1];
+let slideIndex;
 /* Class the members of each slideshow group with different CSS classes */
-const slideId = ["mySlides1", "mySlides2", "mySlides3"];
+let slideId;
 
 $(document).ready(function () {
     isLogged();
@@ -21,6 +21,12 @@ function showAllAds() {
             dataType: 'json'
         }).done(function (data) {
             let i = 1;
+            slideIndex = new Array(data.length).fill(1);
+            slideId = new Array(data.length);
+            for (var k = 0; k < slideId.length; k++) {
+                slideId[k] = 'mySlides' + (k + 1);
+                console.log(slideId[k]);
+            }
             for (const ad of data) {
                 $('#ads').append('<div class="advertisement">\n' +
                     '                <p id="adCreated" style="float: right">\n' +
@@ -44,9 +50,9 @@ function showAllAds() {
                 i = i + 1;
                 // $('#selectCarBrandId').append('<option value="' + brand.id + '">' + brand.carBrand + '</option>');
             }
-            showSlides(1, 0);
-            showSlides(1, 1);
-            showSlides(1, 2);
+            for (let j = 0; j < data.length; j++) {
+                showSlides(1, j);
+            }
         }).fail(function (err) {
             console.log(err);
         });
@@ -176,11 +182,6 @@ function loadTransmissions() {
             console.log(err);
         });
     })
-}
-
-// // Thumbnail image controls
-function currentSlide(n, no) {
-    showSlides(slideIndex = n, no);
 }
 
 function plusSlides(n, no) {

@@ -113,6 +113,19 @@ section p {
     display: none;
 }
 
+.mySlides4 {
+    display: none;
+}
+.mySlides5 {
+    display: none;
+}
+.mySlides6 {
+    display: none;
+}
+.mySlides7 {
+    display: none;
+}
+
 /* Next & previous buttons */
 .prev, .next {
     cursor: pointer;
