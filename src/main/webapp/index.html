@@ -18,18 +18,19 @@
         <aside>
             <h2 style="text-align: center">Фильтры</h2>
             <select id="selectCarBrandId" onchange="loadCarModels()">
-                <option selected>Выберите брэнд</option>
+                <option value="0" selected>Выберите брэнд</option>
             </select>
             <select id="selectCarModelId">
-                <option selected>Выберите модель</option>
+                <option value="0" selected>Выберите модель</option>
             </select>
             <select id="selectBodyTypeId">
-                <option selected>Выберите тип кузова</option>
+                <option value="0" selected>Выберите тип кузова</option>
             </select>
             <select id="selectTransmissionId">
-                <option selected>Выберите коробку передач</option>
+                <option value="0" selected>Выберите коробку передач</option>
             </select>
-            <input type="button" value="Поиск" onclick="trySearch()">
+            <input type="button" value="Поиск по фильтрам" onclick="showAdsByFilters()">
+            <input type="button" value="Показать все объявления" onclick="showAllAds()">
         </aside>
         <section>
             <span id="ads"></span>
@@ -40,39 +41,3 @@
     <script src="javascript/index.js"></script>
 </body>
 </html>
-
-<!--<div class="advertisement">-->
-<!--    <p id="adCreated" style="float: right">-->
-<!--        Объявление создано: 13 февраля 2022г.-->
-<!--    </p>-->
-<!--    <p id="adInfo">-->
-<!--        Bmw 318i sedan automat 2018г. 150000км-->
-<!--    </p>-->
-<!--    <p id="adPrice">-->
-<!--        Цена: 3000000 руб.-->
-<!--    </p>-->
-<!--    <p id="adDecs">-->
-<!--        Не бита, не крашена, 1 владелец по ПТС Не бита, не крашена, 1 владелец по ПТС-->
-<!--        Не бита, не крашена, 1 владелец по ПТСНе бита, не крашена, 1 владелец по ПТС-->
-<!--        Не бита, не крашена, 1 владелец по ПТСНе бита, не крашена, 1 владелец по ПТС-->
-<!--        Не бита, не крашена, 1 владелец по ПТСНе бита, не крашена, 1 владелец по ПТС-->
-<!--    </p>-->
-<!--    <div class="slideshow-container">-->
-<!--        <div class="mySlides fade">-->
-<!--            <img class="carPhoto" src="images/318.jpg"/>-->
-<!--        </div>-->
-<!--        <div class="mySlides fade">-->
-<!--            <img class="carPhoto" src="images/3181.jpg"/>-->
-<!--        </div>-->
-<!--        <div class="mySlides fade">-->
-<!--            <img class="carPhoto" src="images/3182.jpg"/>-->
-<!--        </div>-->
-<!--        <a class="prev" onclick="plusSlides(-1)">&#10094;</a>-->
-<!--        <a class="next" onclick="plusSlides(1)">&#10095;</a>-->
-<!--    </div>-->
-<!--    <div style="text-align:center">-->
-<!--        <span class="dot" onclick="currentSlide(1)"></span>-->
-<!--        <span class="dot" onclick="currentSlide(2)"></span>-->
-<!--        <span class="dot" onclick="currentSlide(3)"></span>-->
-<!--    </div>-->
-<!--</div>-->
