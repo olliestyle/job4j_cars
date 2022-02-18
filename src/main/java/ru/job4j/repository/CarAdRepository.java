@@ -1,5 +1,6 @@
 package ru.job4j.repository;
 
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
@@ -7,6 +8,11 @@ import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import ru.job4j.model.*;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
@@ -91,5 +97,49 @@ public class CarAdRepository {
                         + " join fetch ca.transmission as t"
                         + " join fetch ca.photos as p")
                 .getResultList());
+    }
+
+    public List<CarAd> findByCrit(int carBrand, int carModel, int bodyType, int transmission) {
+        return tx(session -> {
+            CriteriaBuilder cb = session.getCriteriaBuilder();
+            CriteriaQuery<CarAd> carAdCriteria = cb.createQuery(CarAd.class);
+            Root<CarAd> carAdRoot = carAdCriteria.from(CarAd.class);
+            carAdCriteria.select(carAdRoot);
+            Predicate predicate = getPredicate(carAdRoot, cb, carBrand, carModel, bodyType, transmission);
+            carAdCriteria.where(predicate);
+            List<CarAd> toReturn = session.createQuery(carAdCriteria).getResultList();
+            System.out.println("hello");
+            toReturn.forEach(ca -> {
+                ca.setUser(null);
+                ca.setCarBrand((CarBrand) Hibernate.unproxy(ca.getCarBrand()));
+                ca.setCarModel((CarModel) Hibernate.unproxy(ca.getCarModel()));
+                ca.setBodyType((BodyType) Hibernate.unproxy(ca.getBodyType()));
+                ca.setTransmission((Transmission) Hibernate.unproxy(ca.getTransmission()));
+                List<String> photos = new ArrayList<>();
+                for (String s: ca.getPhotos()) {
+                    photos.add(s);
+                }
+                ca.setPhotos(photos);
+            });
+            System.out.println("hello");
+            return toReturn;
+        });
+    }
+
+    private Predicate getPredicate(Root<CarAd> carAdRoot, CriteriaBuilder cb, int carBrand, int carModel, int bodyType, int transmission) {
+        List<Predicate> predicates = new ArrayList<>();
+        if (carBrand != 0) {
+            predicates.add(cb.equal(carAdRoot.get("carBrand").get("id"), carBrand));
+        }
+        if (carModel != 0) {
+            predicates.add(cb.equal(carAdRoot.get("carModel").get("id"), carModel));
+        }
+        if (bodyType != 0) {
+            predicates.add(cb.equal(carAdRoot.get("bodyType").get("id"), bodyType));
+        }
+        if (transmission != 0) {
+            predicates.add(cb.equal(carAdRoot.get("transmission").get("id"), transmission));
+        }
+        return cb.and(predicates.toArray(new Predicate[0]));
     }
 }

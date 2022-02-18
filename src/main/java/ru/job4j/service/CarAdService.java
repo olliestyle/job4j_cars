@@ -31,4 +31,8 @@ public class CarAdService {
     public List<CarAd> findAllCarAds() {
         return CAR_AD_REPOSITORY.findAllCarAds();
     }
+
+    public List<CarAd> findByCrit(int carBrand, int carModel, int bodyType, int transmission) {
+        return CAR_AD_REPOSITORY.findByCrit(carBrand, carModel, bodyType, transmission);
+    }
 }

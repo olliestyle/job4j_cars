@@ -12,7 +12,12 @@ $(document).ready(function () {
     showAllAds();
 });
 
+function clearAds() {
+    document.getElementById('ads').innerHTML = "";
+}
+
 function showAllAds() {
+    clearAds();
     $(function () {
         $.ajax({
             type: 'GET',
@@ -28,6 +33,10 @@ function showAllAds() {
                 console.log(slideId[k]);
             }
             for (const ad of data) {
+                let sold = '<p style="color: green; size: 20px; float: right; margin-right: 300px">' + 'В продаже!' + '</p>';
+                if (ad.isSold){
+                    sold = '<p style="color: red; size: 20px; float: right; margin-right: 300px">' + 'Продано!' + '</p>';
+                }
                 $('#ads').append('<div class="advertisement">\n' +
                     '                <p id="adCreated" style="float: right">\n' +
                     '                    Объявление создано:' + ad.created +
@@ -36,7 +45,7 @@ function showAllAds() {
                     '                ' + ad.carBrand.carBrand + ' ' + ad.carModel.carModel +
                     '                ' + ad.bodyType.bodyType + ' ' + ad.transmission.transmission +
                     '                ' + ad.manufactureYear + 'г.' + ad.mileage + 'км.' +
-                    '                </p>\n' +
+                    '                </p>\n' + sold +
                     '                <p id="adPrice">\n' +
                     '                    Цена:' + ad.price + 'руб.' +
                     '                </p>\n' +
@@ -45,6 +54,63 @@ function showAllAds() {
                     '                </p>\n' +
                     '                    <div class="slideshow-container">\n' +
                                                 fillPhotos(ad.photos, i) +
+                    '                    </div>\n' +
+                    '            </div>');
+                i = i + 1;
+                // $('#selectCarBrandId').append('<option value="' + brand.id + '">' + brand.carBrand + '</option>');
+            }
+            for (let j = 0; j < data.length; j++) {
+                showSlides(1, j);
+            }
+        }).fail(function (err) {
+            console.log(err);
+        });
+    })
+}
+
+function showAdsByFilters() {
+    clearAds();
+    let carBrandId = document.getElementById('selectCarBrandId').value;
+    let carModelId = document.getElementById('selectCarModelId').value;
+    let bodyTypeId = document.getElementById('selectBodyTypeId').value;
+    let transmissionId = document.getElementById('selectTransmissionId').value;
+    $(function () {
+        $.ajax({
+            type: 'GET',
+            url: 'http://localhost:8080/job4j_cars/search.do',
+            data: {carBrandId, carModelId, bodyTypeId, transmissionId},
+            cache: false,
+            dataType: 'json'
+        }).done(function (data) {
+            let i = 1;
+            slideIndex = new Array(data.length).fill(1);
+            slideId = new Array(data.length);
+            for (var k = 0; k < slideId.length; k++) {
+                slideId[k] = 'mySlides' + (k + 1);
+                console.log(slideId[k]);
+            }
+            for (const ad of data) {
+                let sold = '<p style="color: green; size: 20px; float: right; margin-right: 300px">' + 'В продаже!' + '</p>';
+                if (ad.isSold){
+                    sold = '<p style="color: red; size: 20px; float: right; margin-right: 300px">' + 'Продано!' + '</p>';
+                }
+                $('#ads').append('<div class="advertisement">\n' +
+                    '                <p id="adCreated" style="float: right">\n' +
+                    '                    Объявление создано:' + ad.created +
+                    '                </p>\n' +
+                    '                <p id="adInfo">\n' +
+                    '                ' + ad.carBrand.carBrand + ' ' + ad.carModel.carModel +
+                    '                ' + ad.bodyType.bodyType + ' ' + ad.transmission.transmission +
+                    '                ' + ad.manufactureYear + 'г.' + ad.mileage + 'км.' +
+                    '                </p>\n' + sold +
+                    '                <p id="adPrice">\n' +
+                    '                    Цена:' + ad.price + 'руб.' +
+                    '                </p>\n' +
+                    '                <p id="adDecs">\n' +
+                    '                ' + ad.description +
+                    '                </p>\n' +
+                    '                    <div class="slideshow-container">\n' +
+                    fillPhotos(ad.photos, i) +
                     '                    </div>\n' +
                     '            </div>');
                 i = i + 1;
