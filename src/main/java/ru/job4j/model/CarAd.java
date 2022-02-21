@@ -3,6 +3,7 @@ package ru.job4j.model;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -42,7 +43,7 @@ public class CarAd {
     @ElementCollection
     @CollectionTable(name = "images", joinColumns = @JoinColumn(name = "carAdd_id"))
     @Column(name = "photourl")
-    private List<String> photos;
+    private List<String> photos = new ArrayList<>();
 
     private boolean isSold;
 

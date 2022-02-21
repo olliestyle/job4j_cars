@@ -9,9 +9,19 @@ input[type="text"] {
     background-color: #f3f3f3;
     border: 1px solid #e7e7e7;
     height: 30px;
-    color: #b2b2b2;
+    color: #000000;
     padding: 0 10px;
     vertical-align: top;
+    font-family: 'Oswald', sans-serif;
+}
+input[type="file"] {
+    background-color: #f3f3f3;
+    border: 1px solid #e7e7e7;
+    height: 30px;
+    color: #000000;
+    padding: 0 10px;
+    vertical-align: top;
+    font-family: 'Oswald', sans-serif;
 }
 a {
     color: #000000;
@@ -22,6 +32,7 @@ a {
 
 p {
     margin: 20px 0;
+    font-family: 'Oswald', sans-serif;
 }
 #wrapper {
     max-width: 960px;
@@ -75,11 +86,26 @@ select {
     border: 1px solid black;
 }
 
+.changeStatus {
+    margin-left: 260px;
+    margin-bottom: 10px;
+    width: 700px;
+    height: 200px;
+    border: 1px solid black;
+}
+
 section p {
     margin-top: 5px;
     margin-left: 10px;
     margin-bottom: 5px;
     color: black;
+}
+
+.carChange {
+    font-family: 'Oswald', sans-serif;
+    color: black;
+    width: 200px;
+    margin: 20px;
 }
 
 .carPhoto {
@@ -123,6 +149,15 @@ section p {
     display: none;
 }
 .mySlides7 {
+    display: none;
+}
+.mySlides8 {
+    display: none;
+}
+.mySlides9 {
+    display: none;
+}
+.mySlides10 {
     display: none;
 }
 

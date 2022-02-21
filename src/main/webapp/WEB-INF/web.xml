@@ -44,6 +44,18 @@
     <servlet-name>SearchServlet</servlet-name>
     <servlet-class>ru.job4j.controller.SearchServlet</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>AddCarAdServlet</servlet-name>
+    <servlet-class>ru.job4j.controller.AddCarAdServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>AddPhotosToCarAdServlet</servlet-name>
+    <servlet-class>ru.job4j.controller.AddPhotosToCarAdServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>ChangeStatusServlet</servlet-name>
+    <servlet-class>ru.job4j.controller.ChangeStatusServlet</servlet-class>
+  </servlet>
   <servlet-mapping>
     <servlet-name>LoginServlet</servlet-name>
     <url-pattern>/login.do</url-pattern>
@@ -83,5 +95,17 @@
   <servlet-mapping>
     <servlet-name>SearchServlet</servlet-name>
     <url-pattern>/search.do</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>AddCarAdServlet</servlet-name>
+    <url-pattern>/addCarAd.do</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>AddPhotosToCarAdServlet</servlet-name>
+    <url-pattern>/addPhotosToCarAd.do</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ChangeStatusServlet</servlet-name>
+    <url-pattern>/changeStatus.do</url-pattern>
   </servlet-mapping>
 </web-app>

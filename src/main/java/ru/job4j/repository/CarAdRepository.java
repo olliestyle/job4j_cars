@@ -12,6 +12,8 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
@@ -41,6 +43,7 @@ public class CarAdRepository {
         session.beginTransaction();
         try {
             T toReturn = function.apply(session);
+            session.getTransaction().commit();
             return toReturn;
         } catch (final Exception e) {
             session.getTransaction().rollback();
@@ -48,6 +51,53 @@ public class CarAdRepository {
         } finally {
             session.close();
         }
+    }
+
+    public void addPhotosToCarAd(Integer carAdId, List<String> photos) {
+        tx(session -> {
+            CarAd carAd = session.get(CarAd.class, carAdId);
+            System.out.println(carAd.getPhotos());
+            photos.forEach(p -> carAd.getPhotos().add(p));
+            System.out.println(carAd.getPhotos());
+            session.saveOrUpdate(carAd);
+            return null;
+        });
+    }
+
+    public Serializable addNewCarAd(Integer carBrandId, Integer carModelId, Integer bodyTypeId, Integer transmissionId, short year, Integer mileage, BigDecimal price, String desc, User user) {
+        return tx(session -> {
+            CarBrand carBrand = session.get(CarBrand.class, carBrandId);
+            CarModel carModel = session.get(CarModel.class, carModelId);
+            BodyType bodyType = session.get(BodyType.class, bodyTypeId);
+            Transmission transmission = session.get(Transmission.class, transmissionId);
+            User userToAdd = session.get(User.class, user.getId());
+
+            CarAd toAdd = new CarAd.Builder()
+                    .carBrand(carBrand)
+                    .carModel(carModel)
+                    .bodyType(bodyType)
+                    .transmission(transmission)
+                    .manufactureYear(year)
+                    .mileage(mileage)
+                    .user(userToAdd)
+                    .price(price)
+                    .description(desc)
+                    .build();
+
+            return session.save(toAdd);
+        });
+    }
+
+    public List<CarAd> findByUserId(Integer userId) {
+        return tx(session -> session.createQuery("select distinct ca from CarAd ca "
+                   + " join fetch ca.carModel cm"
+                   + " join fetch ca.bodyType bt"
+                   + " join fetch ca.carBrand cb"
+                   + " join fetch ca.transmission tm"
+                   + " join fetch ca.user u"
+                   + " where u.id = :userId ", CarAd.class)
+                   .setParameter("userId", userId)
+                   .getResultList());
     }
 
     public List<CarAd> findByCarModel(String carModel) {
@@ -99,6 +149,14 @@ public class CarAdRepository {
                 .getResultList());
     }
 
+    public Integer changeCarAdStatus(Integer id) {
+        return tx(session -> session.
+                createQuery("update CarAd set isSold = :sold where id = :id")
+                .setParameter("sold", true)
+                .setParameter("id", id)
+                .executeUpdate());
+    }
+
     public List<CarAd> findByCrit(int carBrand, int carModel, int bodyType, int transmission) {
         return tx(session -> {
             CriteriaBuilder cb = session.getCriteriaBuilder();
@@ -110,7 +168,7 @@ public class CarAdRepository {
             List<CarAd> toReturn = session.createQuery(carAdCriteria).getResultList();
             System.out.println("hello");
             toReturn.forEach(ca -> {
-                ca.setUser(null);
+                ca.setUser((User) Hibernate.unproxy(ca.getUser()));
                 ca.setCarBrand((CarBrand) Hibernate.unproxy(ca.getCarBrand()));
                 ca.setCarModel((CarModel) Hibernate.unproxy(ca.getCarModel()));
                 ca.setBodyType((BodyType) Hibernate.unproxy(ca.getBodyType()));
@@ -119,9 +177,7 @@ public class CarAdRepository {
                 for (String s: ca.getPhotos()) {
                     photos.add(s);
                 }
-                ca.setPhotos(photos);
             });
-            System.out.println("hello");
             return toReturn;
         });
     }
