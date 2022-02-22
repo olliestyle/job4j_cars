@@ -21,16 +21,16 @@
 Основные возможности:
 - Добавление объявлений о продаже автомобиля:
 
-![GIF of ToDo](https://github.com/olliestyle/job4j_cars/blob/main/gifs/addad.gif)
+![GIF of ToDo](https://github.com/olliestyle/job4j_cars/blob/master/gifs/addad.gif)
 
 - Изменение статуса объявления:
 
-![GIF of ToDo](https://github.com/olliestyle/job4j_cars/blob/main/gifs/changestatus.gif)
+![GIF of ToDo](https://github.com/olliestyle/job4j_cars/blob/master/gifs/changestatus.gif)
 
 - Просмотр объявлений и поиск с помощью фильтров(Criteria_API):
 
-![GIF of ToDo](https://github.com/olliestyle/job4j_cars/blob/main/gifs/filters.gif)
+![GIF of ToDo](https://github.com/olliestyle/job4j_cars/blob/master/gifs/filters.gif)
 
 - Регистрация и вход:
 
-![GIF of ToDo](https://github.com/olliestyle/job4j_cars/blob/main/gifs/reglog.gif)
+![GIF of ToDo](https://github.com/olliestyle/job4j_cars/blob/master/gifs/reglog.gif)
