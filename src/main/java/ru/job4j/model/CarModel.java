@@ -36,6 +36,13 @@ public class CarModel {
         return model;
     }
 
+    public CarModel() {
+    }
+
+    public CarModel(int id) {
+        this.id = id;
+    }
+
     public int getId() {
         return id;
     }

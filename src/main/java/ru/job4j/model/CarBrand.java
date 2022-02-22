@@ -27,6 +27,13 @@ public class CarBrand {
         return brand;
     }
 
+    public CarBrand() {
+    }
+
+    public CarBrand(int id) {
+        this.id = id;
+    }
+
     public int getId() {
         return id;
     }

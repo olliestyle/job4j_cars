@@ -13,7 +13,6 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
@@ -56,36 +55,14 @@ public class CarAdRepository {
     public void addPhotosToCarAd(Integer carAdId, List<String> photos) {
         tx(session -> {
             CarAd carAd = session.get(CarAd.class, carAdId);
-            System.out.println(carAd.getPhotos());
             photos.forEach(p -> carAd.getPhotos().add(p));
-            System.out.println(carAd.getPhotos());
             session.saveOrUpdate(carAd);
             return null;
         });
     }
 
-    public Serializable addNewCarAd(Integer carBrandId, Integer carModelId, Integer bodyTypeId, Integer transmissionId, short year, Integer mileage, BigDecimal price, String desc, User user) {
-        return tx(session -> {
-            CarBrand carBrand = session.get(CarBrand.class, carBrandId);
-            CarModel carModel = session.get(CarModel.class, carModelId);
-            BodyType bodyType = session.get(BodyType.class, bodyTypeId);
-            Transmission transmission = session.get(Transmission.class, transmissionId);
-            User userToAdd = session.get(User.class, user.getId());
-
-            CarAd toAdd = new CarAd.Builder()
-                    .carBrand(carBrand)
-                    .carModel(carModel)
-                    .bodyType(bodyType)
-                    .transmission(transmission)
-                    .manufactureYear(year)
-                    .mileage(mileage)
-                    .user(userToAdd)
-                    .price(price)
-                    .description(desc)
-                    .build();
-
-            return session.save(toAdd);
-        });
+    public Serializable addNewCarAd(CarAd carAd) {
+        return tx(session -> session.save(carAd));
     }
 
     public List<CarAd> findByUserId(Integer userId) {
@@ -166,7 +143,6 @@ public class CarAdRepository {
             Predicate predicate = getPredicate(carAdRoot, cb, carBrand, carModel, bodyType, transmission);
             carAdCriteria.where(predicate);
             List<CarAd> toReturn = session.createQuery(carAdCriteria).getResultList();
-            System.out.println("hello");
             toReturn.forEach(ca -> {
                 ca.setUser((User) Hibernate.unproxy(ca.getUser()));
                 ca.setCarBrand((CarBrand) Hibernate.unproxy(ca.getCarBrand()));

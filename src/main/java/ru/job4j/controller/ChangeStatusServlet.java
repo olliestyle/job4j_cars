@@ -10,7 +10,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
@@ -25,7 +24,6 @@ public class ChangeStatusServlet extends HttpServlet {
         resp.setContentType("application/json; charset=utf-8");
         OutputStream outputStream = resp.getOutputStream();
         Integer userId = ((User) req.getSession().getAttribute("user")).getId();
-        System.out.println(userId);
         List<CarAd> carAds = CarAdService.getInstance().findByUserId(userId);
         carAds.forEach(ca -> {
             ca.getBodyType().setCarModels(null);

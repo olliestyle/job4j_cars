@@ -25,6 +25,13 @@ public class BodyType {
         return body;
     }
 
+    public BodyType() {
+    }
+
+    public BodyType(int id) {
+        this.id = id;
+    }
+
     public int getId() {
         return id;
     }

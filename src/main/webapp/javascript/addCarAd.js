@@ -26,11 +26,15 @@ function addCarAd() {
             dataType: 'json'
         }).done(function (carAdId) {
             addPhotosToCarAd(carAdId);
-            window.location.href = "http://localhost:8080/job4j_cars";
+            delay(500).then(() => window.location.href = "http://localhost:8080/job4j_cars");
         }).fail(function (err) {
             console.log(err);
         });
     })
+}
+
+function delay(time) {
+    return new Promise(resolve => setTimeout(resolve, time));
 }
 
 function addPhotosToCarAd(carAdId) {
@@ -51,7 +55,7 @@ function addPhotosToCarAd(carAdId) {
             data: formData,
             enctype: 'multipart/form-data'
         }).done(function () {
-            console.log("hello");
+
         }).fail(function (err) {
             console.log(err);
         });
@@ -83,7 +87,7 @@ function isLogged() {
                     + '<a id="message" href="' + linkToExit() + '"> Выйти </a>'
                     + '</div>')
                     .insertAfter(".username");
-                $('<h2 style="text-align: center">Фильтры</h2>\n' +
+                $('<h2 style="text-align: center">Общее</h2>\n' +
                     '        <select id="selectCarBrandId" onchange="loadCarModels()">\n' +
                     '            <option value="0" selected>Выберите брэнд</option>\n' +
                     '        </select>\n' +

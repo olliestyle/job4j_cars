@@ -2,7 +2,7 @@ package ru.job4j.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import ru.job4j.model.User;
+import ru.job4j.model.*;
 import ru.job4j.service.CarAdService;
 
 import javax.servlet.ServletException;
@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 
 
@@ -32,8 +33,19 @@ public class AddCarAdServlet extends HttpServlet {
         String price = req.getParameter("price");
         String desc = req.getParameter("desc");
 
-        Integer added = (Integer) CarAdService.getInstance()
-                .addNewCarAd(carBrand, carModel, bodyType, transmission, year, mileage, price, desc, user);
+        CarAd toAdd = new CarAd.Builder()
+                .user(user)
+                .carBrand(new CarBrand(Integer.parseInt(carBrand)))
+                .carModel(new CarModel(Integer.parseInt(carModel)))
+                .bodyType(new BodyType(Integer.parseInt(bodyType)))
+                .transmission(new Transmission(Integer.parseInt(transmission)))
+                .manufactureYear(Short.parseShort(year))
+                .mileage(Integer.parseInt(mileage))
+                .price(new BigDecimal(price))
+                .description(desc)
+                .build();
+
+        Integer added = (Integer) CarAdService.getInstance().addNewCarAd(toAdd);
 
         resp.setContentType("application/json; charset=utf-8");
         OutputStream outputStream = resp.getOutputStream();

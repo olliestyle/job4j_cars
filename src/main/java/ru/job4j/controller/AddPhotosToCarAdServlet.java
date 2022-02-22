@@ -53,6 +53,7 @@ public class AddPhotosToCarAdServlet extends HttpServlet {
             }
         } catch (FileUploadException e) {
             e.printStackTrace();
+            return;
         }
         CarAdService.getInstance().addPhotosToCarAd(carAdId, photos);
     }
