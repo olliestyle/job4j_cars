@@ -43,7 +43,6 @@ function linkToExit() {
 }
 
 function showUserAds() {
-    console.log('in begin of show user ads and call clearAds')
         clearAds();
         $(function () {
             $.ajax({
@@ -81,7 +80,6 @@ function showUserAds() {
 }
 
 function clearAds() {
-    console.log("in clear")
     document.getElementById('adsListId').innerHTML = "";
 }
 
@@ -93,7 +91,6 @@ function updateAdStatus(adId) {
             cache: false,
             data: {adId}
         }).done(function () {
-            console.log("updateStatus and call showUserAds")
             showUserAds();
         }).fail(function (err) {
             console.log(err);

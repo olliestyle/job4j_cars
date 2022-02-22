@@ -3,9 +3,7 @@
 function tryLogin() {
     $(function () {
         var email = document.getElementById('emailId').value;
-        console.log(email);
         var password = document.getElementById('passwordId').value;
-        console.log(password)
         $.ajax({
             type: 'post',
             url: 'http://localhost:8080/job4j_cars/login.do',
