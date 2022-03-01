@@ -1,11 +1,6 @@
 package ru.job4j.repository;
 
 import org.hibernate.Hibernate;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.registry.StandardServiceRegistry;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import ru.job4j.model.*;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -15,15 +10,10 @@ import javax.persistence.criteria.Root;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 
 public class CarAdRepository {
 
-    private final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
-            .configure().build();
-
-    private final SessionFactory factory = new MetadataSources(registry)
-            .buildMetadata().buildSessionFactory();
+    private final Repository repository = Repository.getInstance();
 
     private CarAdRepository() {
 
@@ -37,23 +27,8 @@ public class CarAdRepository {
         return CarAdRepositoryHolder.CAR_AD_REPOSITORY;
     }
 
-    public <T> T tx(Function<Session, T> function) {
-        Session session = factory.openSession();
-        session.beginTransaction();
-        try {
-            T toReturn = function.apply(session);
-            session.getTransaction().commit();
-            return toReturn;
-        } catch (final Exception e) {
-            session.getTransaction().rollback();
-            throw e;
-        } finally {
-            session.close();
-        }
-    }
-
     public void addPhotosToCarAd(Integer carAdId, List<String> photos) {
-        tx(session -> {
+        repository.op(session -> {
             CarAd carAd = session.get(CarAd.class, carAdId);
             photos.forEach(p -> carAd.getPhotos().add(p));
             session.saveOrUpdate(carAd);
@@ -62,11 +37,11 @@ public class CarAdRepository {
     }
 
     public Serializable addNewCarAd(CarAd carAd) {
-        return tx(session -> session.save(carAd));
+        return repository.op(session -> session.save(carAd));
     }
 
     public List<CarAd> findByUserId(Integer userId) {
-        return tx(session -> session.createQuery("select distinct ca from CarAd ca "
+        return repository.op(session -> session.createQuery("select distinct ca from CarAd ca "
                    + " join fetch ca.carModel cm"
                    + " join fetch ca.bodyType bt"
                    + " join fetch ca.carBrand cb"
@@ -78,7 +53,7 @@ public class CarAdRepository {
     }
 
     public List<CarAd> findByCarModel(String carModel) {
-        return tx(session -> session.createQuery("select distinct ca from CarAd ca "
+        return repository.op(session -> session.createQuery("select distinct ca from CarAd ca "
                 + " join fetch ca.carModel cm"
                 + " join fetch ca.bodyType bt"
                 + " join fetch ca.carBrand cb"
@@ -90,22 +65,22 @@ public class CarAdRepository {
     }
 
     public List<CarAd> findWithPhoto() {
-        return tx(session -> session.createQuery("select distinct ca from CarAd ca "
+        return repository.op(session -> session.createQuery("select distinct ca from CarAd ca "
                 + " where ca.photo <> '' ", CarAd.class)
                 .getResultList());
     }
 
     public List<CarAd> findByLastDay() {
-        return tx(session -> session.createQuery("from CarAd ca where ca.created >= current_date - 1")
+        return repository.op(session -> session.createQuery("from CarAd ca where ca.created >= current_date - 1")
                 .getResultList());
     }
 
     public List<?> findAllByClassName(Class clazz) {
-        return tx(session -> session.createQuery("from " + clazz.getName()).getResultList());
+        return repository.op(session -> session.createQuery("from " + clazz.getName()).getResultList());
     }
 
     public List<CarModel> findAllModelsById(Integer id) {
-        return tx(session -> session
+        return repository.op(session -> session
                 .createQuery("select distinct cm from CarModel cm "
                         + " join fetch cm.carBrand as cb "
                         + " join fetch cm.bodyType as bt "
@@ -115,7 +90,7 @@ public class CarAdRepository {
     }
 
     public List<CarAd> findAllCarAds() {
-        return tx(session -> session
+        return repository.op(session -> session
                 .createQuery("select distinct ca from CarAd ca "
                         + " join fetch ca.user as u "
                         + " join fetch ca.carBrand as cb "
@@ -127,7 +102,7 @@ public class CarAdRepository {
     }
 
     public Integer changeCarAdStatus(Integer id) {
-        return tx(session -> session.
+        return repository.op(session -> session.
                 createQuery("update CarAd set isSold = :sold where id = :id")
                 .setParameter("sold", true)
                 .setParameter("id", id)
@@ -135,7 +110,7 @@ public class CarAdRepository {
     }
 
     public List<CarAd> findByCrit(int carBrand, int carModel, int bodyType, int transmission) {
-        return tx(session -> {
+        return repository.op(session -> {
             CriteriaBuilder cb = session.getCriteriaBuilder();
             CriteriaQuery<CarAd> carAdCriteria = cb.createQuery(CarAd.class);
             Root<CarAd> carAdRoot = carAdCriteria.from(CarAd.class);

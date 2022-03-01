@@ -5,7 +5,7 @@ import ru.job4j.repository.UserRepository;
 
 public class UserService {
 
-    UserRepository repository = UserRepository.getInstance();
+    private static final UserRepository USER_REPOSITORY = UserRepository.getInstance();
 
     private UserService() {
 
@@ -20,10 +20,10 @@ public class UserService {
     }
 
     public User addUser(User user) {
-        return repository.addUser(user);
+        return USER_REPOSITORY.addUser(user);
     }
 
     public User findByEmail(String email) {
-        return repository.findByEmail(email);
+        return USER_REPOSITORY.findByEmail(email);
     }
 }
